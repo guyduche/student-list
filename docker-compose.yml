@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  api_flask:
+#   container_name: api_flask
+    build: simple_api
+    ports:
+      - "5000:5000"
+    networks:
+      - web
+    volumes:
+      - ./simple_api/student_age.json:/data/student_age.json
+#   labels:
+#     - traefik.enable=true
+#     - traefik.http.routers.express_preprod.rule=Host(api-flask.fil-rouge.fr)
+#     - traefik.http.routers.apache_prod.rule=Host(${URLEXPRESS})
+#     - traefik.http.services.express_preprod.loadbalancer.server.port=4000
+#     - traefik.http.routers.express_preprod.entrypoints=websecure
+#     - traefik.http.routers.express_preprod.tls.certresolver=myresolver
+#   restart: always
+
+
+  front_website:
+#   container_name: front_website
+    build: website
+    ports:
+      - "80:80"
+    depends_on:
+      - api_flask
+    networks:
+      - web
+    volumes:
+      - ./website:/var/www/html
+    environment:
+      - USERNAME=toto
+      - PASSWORD=python
+#   labels:
+#     - traefik.enable=true
+#     - traefik.http.routers.apache_prod.rule=Host(front-website.fil-rouge.fr)
+#     - traefik.http.routers.apache_prod.rule=Host(${URLANGULAR})
+#     - traefik.http.services.apache_prod.loadbalancer.server.port=80
+#     - traefik.http.routers.apache_prod.entrypoints=websecure
+#     - traefik.http.routers.apache_prod.tls.certresolver=myresolver
+#   restart: always
+networks:
+  web:
+    driver: bridge

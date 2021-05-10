@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        curl -u ${STUDENT_AGE_LOGIN_USR}:${STUDENT_AGE_LOGIN_PSW} -X GET http://172.17.0.1:5000/pozos/api/v1.0/get_student_ages | grep -q "student_ages"
+                        curl -u ${STUDENT_AGE_LOGIN} -X GET http://172.17.0.1:5000/pozos/api/v1.0/get_student_ages | grep -q "student_ages"
                     '''
                 }
             }

@@ -15,7 +15,7 @@ pipeline {
                 script {
                     sh '''
                     git clone https://github.com/guyduche/student-list.git || echo "already cloned"
-                    cd student-list || echo "already in helloworld"
+                    cd student-list || echo "already in student-list"
                     '''
                 }
             }
@@ -25,6 +25,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    cd simple_api
                     docker build -t $IMAGE_REPO/$IMAGE_API:$IMAGE_TAG .
                     '''
                 }

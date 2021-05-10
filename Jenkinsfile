@@ -36,7 +36,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    docker run --name $IMAGE_API -v ${PWD}/simple_api:/data -d -p 5000:5000 $IMAGE_REPO/$IMAGE_API:$IMAGE_TAG
+                    docker run --name $IMAGE_API -v /home/centos/student-list/simple_api/student_age.json:/data/student_age.json -d -p 5000:5000 --network jenkins_default $IMAGE_REPO/$IMAGE_API:$IMAGE_TAG
                     sleep 5
                     '''
                 }
@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        curl -X GET http://172.18.0.3:5000/pozos/api/v1.0/get_student_ages | grep -q "Unauthorized access"
+                        curl -u ${STUDENT_AGE_LOGIN} -X GET http://${IMAGE_API}:5000/pozos/api/v1.0/get_student_ages | grep -q "student_ages"
                     '''
                 }
             }

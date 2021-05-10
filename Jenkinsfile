@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        curl -X GET http://192.168.31.139:5000/pozos/api/v1.0/get_student_ages | grep -q "Unauthorized access"
+                        curl -X GET http://172.17.0.1:5000/pozos/api/v1.0/get_student_ages | grep -q "Unauthorized access"
                     '''
                 }
             }

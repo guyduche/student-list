@@ -20,29 +20,32 @@ pipeline {
                 }
             }
         }
-        stage('Build simple_api image') {
+        stage('Build images') {
             agent any
             steps {
                 script {
                     sh '''
                     cd simple_api
                     docker build -t $IMAGE_REPO/$IMAGE_API:$IMAGE_TAG .
+                    cd ../website
+                    docker build -t $IMAGE_REPO/$IMAGE_WEBSITE:$IMAGE_TAG .
                     '''
                 }
             }
         }
-        stage('Run simple_api') {
+        stage('Run containers') {
             agent any
             steps {
                 script {
                     sh '''
                     docker run --name $IMAGE_API -v /home/centos/student-list/simple_api/student_age.json:/data/student_age.json -d -p 5000:5000 --network jenkins_default $IMAGE_REPO/$IMAGE_API:$IMAGE_TAG
+                    docker run --name $IMAGE_WEBSITE -v /home/centos/student-list/website:/var/www/html -d -p 80:80 --network jenkins_default $IMAGE_REPO/$IMAGE_WEBSITE:$IMAGE_TAG
                     sleep 5
                     '''
                 }
             }
         }
-        stage('Test simple_api') {
+        stage('Test') {
             agent any
             environment {
                 STUDENT_AGE_LOGIN = credentials('student_ages')
@@ -50,17 +53,17 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        curl -u ${STUDENT_AGE_LOGIN} -X GET http://${IMAGE_API}:5000/pozos/api/v1.0/get_student_ages | grep -q "student_ages"
+                        curl -u ${STUDENT_AGE_LOGIN} -X GET http://${IMAGE_WEBSITE} | grep -q "Student Checking"
                     '''
                 }
             }
         }
-        stage('Clean simple_api Container') {
+        stage('Clean Containers') {
             agent any
             steps {
                 script {
                     sh '''
-                    docker rm -vf ${IMAGE_API}
+                    docker rm -vf ${IMAGE_API} ${IMAGE_WEBSITE}
                     '''
                 }
             }

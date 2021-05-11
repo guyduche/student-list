@@ -4,6 +4,7 @@
   hosts: clients
   vars_files:
     - files/secrets/credentials.yml
+    - files/secrets/credentials_api.yml
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
@@ -29,6 +30,9 @@
         name: "filrouge_website"
         image: "guyduche/filrouge:website"
         ports: 80:80
+        env:
+          USERNAME: "{{ username }}"
+          PASSWORD: "{{ password }}"
         pull: true
         volumes:
           - /home/{{ ansible_user }}/student_list/website:/var/www/html

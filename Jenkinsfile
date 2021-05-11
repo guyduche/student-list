@@ -69,7 +69,7 @@ pipeline {
                 }
             }
         }
-        stage('clone on clients') {
+        stage('Clone on clients') {
             agent { docker { image 'dirane/docker-ansible:latest' } }
             steps {
                 script {
@@ -80,13 +80,24 @@ pipeline {
                 }
             }
         }
-        stage('deploy on clients') {
+        stage('Deploy on clients') {
             agent { docker { image 'dirane/docker-ansible:latest' } }
             steps {
                 script {
                     sh '''
                         cd ansible
                         ansible-playbook -i clients.yml student_list.yml --vault-password-file=.passvault
+                    '''
+                }
+            }
+        }
+        stage('Test clients') {
+            agent { docker { image 'dirane/docker-ansible:latest' } }
+            steps {
+                script {
+                    sh '''
+                        cd ansible
+                        ansible-playbook -i clients.yml test.yml --vault-password-file=.passvault
                     '''
                 }
             }

@@ -1,0 +1,22 @@
+- name: "student_list installation"
+  become: true
+  hosts: clients
+  tasks:
+    - name: Install git
+      vars:
+        ansible_python_interpreter: /usr/bin/python2
+      yum:
+        name: git
+        state: present
+    - name: Create directory
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+      file:
+        path: /home/{{ ansible_user }}/student_list
+        state: directory
+    - name: Clone repo
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+      git:
+        repo: "https://github.com/guyduche/student-list.git"
+        dest: "/home/{{ ansible_user }}/student_list"

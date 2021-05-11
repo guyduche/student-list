@@ -64,7 +64,29 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    docker rm -vf ${IMAGE_API} ${IMAGE_WEBSITE}
+                        docker rm -vf ${IMAGE_API} ${IMAGE_WEBSITE}
+                    '''
+                }
+            }
+        }
+        stage('clone on clients') {
+            agent { docker { image 'dirane/docker-ansible:latest' } }
+            steps {
+                script {
+                    sh '''
+                        cd ansible
+                        ansible-playbook -i clients.yml install.yml
+                    '''
+                }
+            }
+        }
+        stage('deploy on clients') {
+            agent { docker { image 'dirane/docker-ansible:latest' } }
+            steps {
+                script {
+                    sh '''
+                        cd ansible
+                        ansible-playbook -i clients.yml student-list.yml --vault-password-file=passvault
                     '''
                 }
             }

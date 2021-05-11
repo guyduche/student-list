@@ -71,11 +71,16 @@ pipeline {
         }
         stage('Clone on clients') {
             agent { docker { image 'dirane/docker-ansible:latest' } }
+            environment {
+                VAULT_PASSWORD = credentials('vault_password')
+            }
             steps {
                 script {
                     sh '''
                         cd ansible
-                        ansible-playbook -i clients.yml install.yml
+                        echo ${VAULT_PASSWORD} > .passvault
+                        ansible-playbook -i clients.yml install.yml --vault-password-file=.passvault
+                        rm -rf student-list/.git .passvault
                     '''
                 }
             }

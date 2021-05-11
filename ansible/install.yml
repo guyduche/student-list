@@ -1,6 +1,8 @@
 - name: "student_list installation"
   become: true
   hosts: clients
+  vars_files:
+    - files/secrets/credentials.yml
   tasks:
     - name: Install git
       vars:
@@ -18,5 +20,5 @@
       vars:
         ansible_python_interpreter: /usr/bin/python3
       git:
-        repo: "https://github.com/guyduche/student-list.git"
+        repo: "https://{{ github_username }}:{{ github_password }}@github.com/guyduche/student-list.git"
         dest: "/home/{{ ansible_user }}/student_list"

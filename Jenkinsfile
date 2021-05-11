@@ -82,22 +82,32 @@ pipeline {
         }
         stage('Deploy on clients') {
             agent { docker { image 'dirane/docker-ansible:latest' } }
+            environment {
+                VAULT_PASSWORD = credentials('vault_password')
+            }
             steps {
                 script {
                     sh '''
                         cd ansible
+                        echo ${VAULT_PASSWORD} > .passvault
                         ansible-playbook -i clients.yml student_list.yml --vault-password-file=.passvault
+                        rm .passvault
                     '''
                 }
             }
         }
         stage('Test clients') {
             agent { docker { image 'dirane/docker-ansible:latest' } }
+            environment {
+                VAULT_PASSWORD = credentials('vault_password')
+            }
             steps {
                 script {
                     sh '''
                         cd ansible
+                        echo ${VAULT_PASSWORD} > .passvault
                         ansible-playbook -i clients.yml test.yml --vault-password-file=.passvault
+                        rm .passvault
                     '''
                 }
             }

@@ -86,7 +86,7 @@ pipeline {
                 script {
                     sh '''
                         cd ansible
-                        ansible-playbook -i clients.yml student-list.yml --vault-password-file=passvault
+                        ansible-playbook -i clients.yml student_list.yml --vault-password-file=passvault
                     '''
                 }
             }

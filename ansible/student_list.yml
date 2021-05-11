@@ -2,9 +2,6 @@
 - name: "student_list run"
   become: true
   hosts: clients
-  vars_files:
-    - files/secrets/credentials.yml
-    - files/secrets/credentials_api.yml
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
@@ -22,7 +19,7 @@
         ports: 5000:5000
         pull: true
         volumes:
-          - /home/{{ ansible_user }}/student_list/simple_api/student_age.json:/data/student_age.json
+          - /home/{{ ansible_user }}/student-list/simple_api/student_age.json:/data/student_age.json
         networks:
           - name: student_list
     - name: Create website
@@ -31,10 +28,10 @@
         image: "guyduche/filrouge:website"
         ports: 80:80
         env:
-          USERNAME: "{{ username }}"
-          PASSWORD: "{{ password }}"
+          USERNAME: "{{ api_username }}"
+          PASSWORD: "{{ api_password }}"
         pull: true
         volumes:
-          - /home/{{ ansible_user }}/student_list/website:/var/www/html
+          - /home/{{ ansible_user }}/student-list/website:/var/www/html
         networks:
           - name: student_list

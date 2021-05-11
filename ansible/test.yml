@@ -2,22 +2,14 @@
 - name: "Availability test"
   become: true
   hosts: clients
-  vars_files:
-    - files/secrets/credentials_api.yml
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - name: "test front-end"
+    - name: "test"
       uri:
         url: "http://{{ ansible_host }}"
+        method: POST
+        body: submit=yes
         return_content: true
       register: this
-      failed_when: "'Student Checking' not in this.content"
-    - name: "test back-end"
-      uri:
-        url_username: "{{ username }}"
-        url_password: "{{ password }}"
-        url: "http://{{ ansible_host }}:5000/pozos/api/v1.0/get_student_ages"
-        return_content: true
-      register: this
-      failed_when: "'student_ages' not in this.content"
+      failed_when: "'alice' not in this.content"

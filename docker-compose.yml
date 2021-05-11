@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  api_flask:
+  filrouge_simple_api:
 #   container_name: api_flask
     build: simple_api
     ports:
@@ -20,13 +20,13 @@ services:
 #   restart: always
 
 
-  front_website:
+  filrouge_website:
 #   container_name: front_website
     build: website
     ports:
       - "80:80"
     depends_on:
-      - api_flask
+      - filrouge_simple_api
     networks:
       - web
     volumes:

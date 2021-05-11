@@ -54,6 +54,7 @@ pipeline {
                 script {
                     sh '''
                         curl -u ${STUDENT_AGE_LOGIN} -X GET http://${IMAGE_WEBSITE} | grep -q "Student Checking"
+                        curl -u ${STUDENT_AGE_LOGIN} -X GET http://${IMAGE_API}:5000/pozos/api/v1.0/get_student_ages | grep -q "student_ages"
                     '''
                 }
             }

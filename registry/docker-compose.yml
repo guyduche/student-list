@@ -1,0 +1,12 @@
+version: "2"
+services:
+  app:
+    image: jc21/registry-ui
+    ports:
+      - 80:80
+    environment:
+      - REGISTRY_HOST=192.168.31.134:5500
+      - REGISTRY_SSL=false
+      - REGISTRY_DOMAIN=192.168.31.134:5500
+      - REGISTRY_STORAGE_DELETE_ENABLED=false
+    restart: on-failure

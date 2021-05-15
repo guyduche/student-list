@@ -7,12 +7,18 @@ metadata:
 spec:
   containers:
   - name: front-end
-    image: student-list_filrouge_website
+    image: localhost:5001/front_end
     ports:
       - containerPort: 80
   - name: back-end
-    image: student-list_filrouge_simple_api
+    image: localhost:5001/back_end
     ports:
       - containerPort: 5000
+    env:
+    - name: username
+      value: "toto"
+    - name: password    
+      value: "python"
+    
 
     

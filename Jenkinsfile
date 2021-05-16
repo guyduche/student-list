@@ -113,6 +113,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                        export HOST_ADDRESS=`docker run --rm --net=host alpine ifconfig ens33 | grep \"inet addr\" | tr -d [a-zA-Z:] | tr -s \" \" | cut -f 2 -d \" \"`
                         cd ansible
                         ansible-playbook -i clients.yml student_list.yml -e "host_address=${HOST_ADDRESS} api_username=${API_CRED_USR} api_password=${API_CRED_PSW}"
                     '''
@@ -135,6 +136,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                        export HOST_ADDRESS=`docker run --rm --net=host alpine ifconfig ens33 | grep \"inet addr\" | tr -d [a-zA-Z:] | tr -s \" \" | cut -f 2 -d \" \"`
                         cd ansible
                         ansible-playbook -i clients.yml clean.yml -e "host_address=${HOST_ADDRESS}"
                     '''

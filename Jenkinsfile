@@ -69,11 +69,11 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker run --name registry -d -p 5001:5000 registry:2
-                        docker tag ${IMAGE_API} localhost:5001/{IMAGE_API}
-                        docker tag ${IMAGE_WEBSITE} localhost:5001/{IMAGE_WEBSITE}
-                        docker push localhost:5001/{IMAGE_API}
-                        docker push localhost:5001/{IMAGE_WEBSITE}
+                        docker run --name registry -d -p 5001:5000 registry:2 || echo "There's already a registry"
+                        docker tag ${IMAGE_API} localhost:5001/${IMAGE_API}
+                        docker tag ${IMAGE_WEBSITE} localhost:5001/${IMAGE_WEBSITE}
+                        docker push localhost:5001/${IMAGE_API}
+                        docker push localhost:5001/${IMAGE_WEBSITE}
                     '''
                 }
             }
@@ -126,7 +126,7 @@ pipeline {
                     sh '''
                         export HOST_ADDRESS=`docker run --rm --net=host alpine ifconfig ens33 | grep "inet addr" | tr -d [a-zA-Z:] | tr -s " " | cut -f 2 -d " "`
                         cd ansible
-                        ansible-playbook -i clients.yml clean.yml
+                        ansible-playbook -i clients.yml clean.yml -e "host_address=${HOST_ADDRESS}"
                     '''
                 }
             }

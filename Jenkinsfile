@@ -83,7 +83,9 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        yum install -y python3 ansible  
+                        yum install -y python3
+                        curl --silent --show-error --retry 5 https://bootstrap.pypa.io/pip/2.7/get-pip.py | python
+                        pip install ansible
                     '''
                 }
             }

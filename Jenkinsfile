@@ -151,10 +151,10 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker tag ${IMAGE_API} guyduche/filrouge:simple_api
+                        docker tag ${IMAGE_API} guyduche/filrouge:simple-api
                         docker tag ${IMAGE_WEBSITE} guyduche/filrouge:website
                         docker login -u ${DOCKERHUB_CRED_USR} -p ${DOCKERHUB_CRED_PSW}
-                        docker push guyduche/filrouge:simple_api
+                        docker push guyduche/filrouge:simple-api
                         docker push guyduche/filrouge:website
                         docker rmi ${IMAGE_API} ${IMAGE_WEBSITE}
                     '''

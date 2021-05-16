@@ -78,15 +78,25 @@ pipeline {
                 }
             }
         }
+        stage('Install ansible on Jenkins docker') {
+            agent any
+            steps {
+                script {
+                    sh '''
+                        yum install -y python3 ansible  
+                    '''
+                }
+            }
+        }
         stage('Clone on clients') {
-            agent { docker { image 'dirane/docker-ansible:latest' } }
+            agent any
             environment {
                 GITHUB_CRED = credentials('github_http')
             }
             steps {
                 script {
                     sh '''
-                        export HOST_ADDRESS=`docker run --rm --net=host alpine ifconfig ens33 | grep "inet addr" | tr -d [a-zA-Z:] | tr -s " " | cut -f 2 -d " "`
+                        export HOST_ADDRESS=`docker run --rm --net=host alpine ifconfig ens33 | grep \"inet addr\" | tr -d [a-zA-Z:] | tr -s \" \" | cut -f 2 -d \" \"`
                         cd ansible
                         ansible-playbook -i clients.yml install.yml -e "github_cred=${GITHUB_CRED} host_address=${HOST_ADDRESS}"
                     '''
@@ -94,14 +104,13 @@ pipeline {
             }
         }
         stage('Deploy on clients') {
-            agent { docker { image 'dirane/docker-ansible:latest' } }
+            agent any
             environment {
                 API_CRED = credentials('student_list')
             }
             steps {
                 script {
                     sh '''
-                        export HOST_ADDRESS=`docker run --rm --net=host alpine ifconfig ens33 | grep "inet addr" | tr -d [a-zA-Z:] | tr -s " " | cut -f 2 -d " "`
                         cd ansible
                         ansible-playbook -i clients.yml student_list.yml -e "host_address=${HOST_ADDRESS} api_username=${API_CRED_USR} api_password=${API_CRED_PSW}"
                     '''
@@ -109,7 +118,7 @@ pipeline {
             }
         }
         stage('Test clients') {
-            agent { docker { image 'dirane/docker-ansible:latest' } }
+            agent any
             steps {
                 script {
                     sh '''
@@ -120,11 +129,10 @@ pipeline {
             }
         }
         stage('Clean clients') {
-            agent { docker { image 'dirane/docker-ansible:latest' } }
+            agent any
             steps {
                 script {
                     sh '''
-                        export HOST_ADDRESS=`docker run --rm --net=host alpine ifconfig ens33 | grep "inet addr" | tr -d [a-zA-Z:] | tr -s " " | cut -f 2 -d " "`
                         cd ansible
                         ansible-playbook -i clients.yml clean.yml -e "host_address=${HOST_ADDRESS}"
                     '''

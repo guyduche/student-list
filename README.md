@@ -178,3 +178,4 @@ Your delivery will be evaluated on:
 Send your delivery at ***eazytrainingfr@gmail.com*** and we will provide you the link of the solution.
 
 ![good luck](https://user-images.githubusercontent.com/18481009/84582398-cad38100-adeb-11ea-95e3-2a9d4c0d5437.gif)
+

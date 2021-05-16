@@ -8,14 +8,10 @@
     - name: Create a network
       community.docker.docker_network:
         name: student_list
-    - name: Login Dockerhub
-      community.docker.docker_login:
-        username: "{{ dockerhub_username }}"
-        password: "{{ dockerhub_password }}"
     - name: Create simple_api
       community.docker.docker_container:
         name: "filrouge_simple_api"
-        image: "guyduche/filrouge:simple_api"
+        image: "{{ host_address }}:5001/filrouge_simple_api"
         ports: 5000:5000
         pull: true
         volumes:
@@ -25,7 +21,7 @@
     - name: Create website
       community.docker.docker_container:
         name: "filrouge_website"
-        image: "guyduche/filrouge:website"
+        image: "{{ host_address }}:5001/filrouge_website"
         ports: 80:80
         env:
           USERNAME: "{{ api_username }}"

@@ -75,6 +75,7 @@ pipeline {
                         docker push localhost:5001/{IMAGE_API}
                         docker push localhost:5001/{IMAGE_WEBSITE}
                     '''
+                }
             }
         }
         stage('Clone on clients') {

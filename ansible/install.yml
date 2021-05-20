@@ -9,6 +9,13 @@
       yum:
         name: python3
         state: present
+    - name: Install six
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+      pip:
+        name: six
+        state: present
+        executable: pip3    
     - name: Install docker python
       vars:
         ansible_python_interpreter: /usr/bin/python3

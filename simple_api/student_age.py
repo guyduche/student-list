@@ -8,8 +8,8 @@ from flask_httpauth import HTTPBasicAuth
 from flask import g, session, redirect, url_for
 from flask_simpleldap import LDAP
 from prometheus_flask_exporter import PrometheusMetrics
-#from werkzeug.middleware.dispatcher import DispatcherMiddleware
-#from prometheus_client import make_wsgi_app
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from prometheus_client import make_wsgi_app
 import json
 import os
 import time
@@ -61,10 +61,10 @@ def oops():
     return ':(', 500
 
 
-# Add prometheus wsgi middleware to route /metrics requests
-#app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
-#    '/metrics': make_wsgi_app()
-#})
+Add prometheus wsgi middleware to route /metrics requests
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+    '/metrics': make_wsgi_app()
+})
 
 @auth.get_password
 def get_password(username):

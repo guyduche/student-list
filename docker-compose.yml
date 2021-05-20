@@ -4,7 +4,7 @@ services:
   filrouge-simple-api:
     build: simple_api
     ports:
-      - "5000:5000"
+      - "5002:5002"
     networks:
       - web
     volumes:

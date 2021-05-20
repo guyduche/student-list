@@ -19,7 +19,7 @@ spec:
       - name: simple-api
         image: guyduche/filrouge:simple-api
         ports:
-        - containerPort: 5000
+        - containerPort: 5002
         volumeMounts:
         - mountPath: /data/student_age.json
           name: repo-api

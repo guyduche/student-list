@@ -1,0 +1,34 @@
+---
+- name: "student_list run"
+  become: true
+  hosts: clients
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Create a network
+      community.docker.docker_network:
+        name: student-list
+    - name: Create simple_api
+      community.docker.docker_container:
+        name: "filrouge-simple-api"
+        image: "{{ host_address }}:5001/filrouge-simple-api"
+        ports: 5000:5000
+        pull: true
+        volumes:
+          - /home/{{ ansible_user }}/student-list/simple_api/student_age.json:/data/student_age.json
+        networks:
+          - name: student-list
+    - name: Create website
+      community.docker.docker_container:
+        name: "filrouge-website"
+        image: "{{ host_address }}:5001/filrouge-website"
+        ports: 80:80
+        env:
+          USERNAME: "{{ api_username }}"
+          PASSWORD: "{{ api_password }}"
+          IPADDRESS: "{{ ansible_host }}"
+        pull: true
+        volumes:
+          - /home/{{ ansible_user }}/student-list/website:/var/www/html
+        networks:
+          - name: student-list

@@ -10,6 +10,6 @@ RUN mkdir /data
 
 COPY student_age.py /
 
-EXPOSE 5000 
+EXPOSE 5002 
 
 CMD [ "python", "./student_age.py" ]

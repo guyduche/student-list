@@ -1,0 +1,35 @@
+---
+- name: "clean"
+  become: true
+  hosts: clients
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: clean website container
+      community.docker.docker_container:
+        name: "filrouge-website"
+        keep_volumes: no
+        state: absent
+    - name: clean api container
+      community.docker.docker_container:
+        name: "filrouge-simple-api"
+        keep_volumes: no
+        state: absent
+    - name: clean network
+      community.docker.docker_network:
+        name: student-list
+        state: absent
+    - name: clean website image
+      community.docker.docker_image:
+        name: "{{ host_address }}:5001/filrouge-website"
+        force_absent: yes
+        state: absent
+    - name: clean api image
+      community.docker.docker_image:
+        name: "{{ host_address }}:5001/filrouge-simple-api"
+        force_absent: yes
+        state: absent
+    - name: clean directory
+      file:
+        path: /home/{{ ansible_user }}/student-list
+        state: absent

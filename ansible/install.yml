@@ -1,0 +1,55 @@
+---
+- name: "student_list installation"
+  become: true
+  hosts: clients
+  tasks:
+    - name: Install python3
+      vars:
+        ansible_python_interpreter: /usr/bin/python2
+      yum:
+        name: python3
+        state: present
+    - name: Install six
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+      pip:
+        name: six
+        state: present
+        executable: pip3
+    - name: Install docker python
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+      pip:
+        name: docker
+        state: present
+        executable: pip3
+    - name: Install git
+      vars:
+        ansible_python_interpreter: /usr/bin/python2
+      yum:
+        name: git
+        state: present
+    - name: Create directory
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+      file:
+        path: /home/{{ ansible_user }}/student-list
+        state: directory
+    - name: Clone repo
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+      git:
+        repo: "https://{{ github_cred }}@github.com/guyduche/student-list.git"
+        dest: "/home/{{ ansible_user }}/student-list"
+    - name: Registry config
+      vars:
+        ansible_python_interpreter: /usr/bin/python2
+      copy:
+        content: "{ \"insecure-registries\":[\"{{ host_address }}:5001\"] }"
+        dest: /etc/docker/daemon.json
+    - name: Restart docker service
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+      service:
+        name: docker
+        state: restarted

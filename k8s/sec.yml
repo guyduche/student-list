@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: apicred
+  namespace: filrouge
+type: Opaque
+data:
+  username: dG90bw==
+  password: cHl0aG9u

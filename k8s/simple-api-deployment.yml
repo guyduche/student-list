@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-api-deployment
+  labels:
+    app: simple-api
+  namespace: filrouge
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: simple-api
+  template:
+    metadata:
+      labels:
+        app: simple-api
+    spec:
+      containers:
+      - name: simple-api
+        image: guyduche/filrouge:simple-api
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: /data/student_age.json
+          name: repo-api
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: repo-api
+        hostPath:
+          path: /home/centos/student-list/simple_api/student_age.json
+          type: File

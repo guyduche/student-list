@@ -1,0 +1,15 @@
+---
+- name: "Availability test"
+  become: true
+  hosts: clients
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: "test"
+      uri:
+        url: "http://{{ ansible_host }}"
+        method: POST
+        body: submit=yes
+        return_content: true
+      register: this
+      failed_when: "'alice' not in this.content"

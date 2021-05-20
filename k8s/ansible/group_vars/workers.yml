@@ -1,0 +1,5 @@
+---
+ansible_user: centos
+ansible_ssh_pass: centos
+ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
+ansible_sudo_pass: centos

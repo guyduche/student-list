@@ -162,6 +162,21 @@ pipeline {
                 }
             }
         }
+        stage('Clone on workers') {
+            agent any
+            environment {
+                GITHUB_CRED = credentials('github_http')
+            }
+            steps {
+                script {
+                    sh '''
+                        export HOST_ADDRESS=`docker run --rm --net=host alpine ifconfig ens33 | grep \"inet addr\" | tr -d [a-zA-Z:] | tr -s \" \" | cut -f 2 -d \" \"`
+                        cd k8s/ansible
+                        ansible-playbook -i hosts.yml clone.yml -e "github_cred=${GITHUB_CRED}"
+                    '''
+                }
+            }
+        }
         stage('Deploy on Kubernetes cluster') {
             agent any
             steps {

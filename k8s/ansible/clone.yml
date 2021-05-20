@@ -1,0 +1,29 @@
+---
+- name: "clone on workers"
+  become: true
+  hosts: workers
+  tasks:
+    - name: Install python3
+      vars:
+        ansible_python_interpreter: /usr/bin/python2
+      yum:
+        name: python3
+        state: present
+    - name: Install git
+      vars:
+        ansible_python_interpreter: /usr/bin/python2
+      yum:
+        name: git
+        state: present
+    - name: Create directory
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+      file:
+        path: /home/{{ ansible_user }}/student-list
+        state: directory
+    - name: Clone repo
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+      git:
+        repo: "https://{{ github_cred }}@github.com/guyduche/student-list.git"
+        dest: "/home/{{ ansible_user }}/student-list"

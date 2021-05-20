@@ -61,7 +61,6 @@ def oops():
     return ':(', 500
 
 
-Add prometheus wsgi middleware to route /metrics requests
 app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
     '/metrics': make_wsgi_app()
 })

@@ -12,6 +12,8 @@ from prometheus_flask_exporter import PrometheusMetrics
 #from prometheus_client import make_wsgi_app
 import json
 import os
+import time
+import random
 
 
 auth = HTTPBasicAuth()
@@ -26,6 +28,39 @@ metrics.register_default(
         labels={'path': lambda: request.path}
     )
 )
+
+endpoints = ('one', 'two', 'three', 'four', 'five', 'error')
+
+
+@app.route('/one')
+def first_route():
+    time.sleep(random.random() * 0.2)
+    return 'ok'
+
+
+@app.route('/two')
+def the_second():
+    time.sleep(random.random() * 0.4)
+    return 'ok'
+
+
+@app.route('/three')
+def test_3rd():
+    time.sleep(random.random() * 0.6)
+    return 'ok'
+
+
+@app.route('/four')
+def fourth_one():
+    time.sleep(random.random() * 0.8)
+    return 'ok'
+
+
+@app.route('/error')
+def oops():
+    return ':(', 500
+
+
 # Add prometheus wsgi middleware to route /metrics requests
 #app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
 #    '/metrics': make_wsgi_app()

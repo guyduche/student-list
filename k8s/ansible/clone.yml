@@ -27,3 +27,4 @@
       git:
         repo: "https://{{ github_cred }}@github.com/guyduche/student-list.git"
         dest: "/home/{{ ansible_user }}/student-list"
+        force: yes

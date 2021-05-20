@@ -54,7 +54,7 @@ pipeline {
                 }
             }
         }
-        stage('Clean') {
+        /*stage('Clean') {
             agent any
             steps {
                 script {
@@ -63,7 +63,7 @@ pipeline {
                     '''
                 }
             }
-        }
+        }*/
         stage('Push on private registry') {
             agent any
             steps {

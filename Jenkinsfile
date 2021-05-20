@@ -120,7 +120,7 @@ pipeline {
                 }
             }
         }
-        stage('Test clients') {
+        /*stage('Test clients') {
             agent any
             steps {
                 script {
@@ -160,6 +160,6 @@ pipeline {
                     '''
                 }
             }
-        }
+        }*/
     }
 }

@@ -40,7 +40,7 @@
         ansible_python_interpreter: /usr/bin/python3
       git:
         repo: "https://{{ github_cred }}@github.com/guyduche/student-list.git"
-        dest: "/home/{{ ansible_user }}/student-list"
+        dest: "/home/{{ ansible_user }}/student-list"  
     - name: Registry config
       vars:
         ansible_python_interpreter: /usr/bin/python2

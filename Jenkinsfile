@@ -185,8 +185,8 @@ pipeline {
                         export HOST_ADDRESS=`docker run --rm --net=host alpine ifconfig ens33 | grep \"inet addr\" | tr -d [a-zA-Z:] | tr -s \" \" | cut -f 2 -d \" \"`
                         ssh -tt centos@${HOST_ADDRESS} /bin/bash <<'EOT'
                         cd student-list/k8s
-                        kubectl apply -f simple-api-deployment.yml --force=true
-                        kubectl apply -f website-deployment.yml --force=true
+                        kubectl replace -f simple-api-deployment.yml --force
+                        kubectl replace -f website-deployment.yml --force
                         exit
                         EOT
                     '''

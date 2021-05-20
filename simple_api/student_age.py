@@ -7,6 +7,7 @@ from flask import url_for
 from flask_httpauth import HTTPBasicAuth
 from flask import g, session, redirect, url_for
 from flask_simpleldap import LDAP
+from prometheus_flask_exporter import PrometheusMetrics
 #from werkzeug.middleware.dispatcher import DispatcherMiddleware
 #from prometheus_client import make_wsgi_app
 import json
@@ -17,7 +18,14 @@ auth = HTTPBasicAuth()
 app = Flask(__name__)
 app.debug = True
 
-
+metrics = PrometheusMetrics(app)
+    
+metrics.register_default(
+    metrics.counter(
+        'by_path_counter', 'Request count by request paths',
+        labels={'path': lambda: request.path}
+    )
+)
 # Add prometheus wsgi middleware to route /metrics requests
 #app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
 #    '/metrics': make_wsgi_app()

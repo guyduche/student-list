@@ -7,27 +7,28 @@
   tasks:
     - name: Create a network
       community.docker.docker_network:
-        name: student_list
+        name: student-list
     - name: Create simple_api
       community.docker.docker_container:
-        name: "filrouge_simple_api"
-        image: "{{ host_address }}:5001/filrouge_simple_api"
+        name: "filrouge-simple-api"
+        image: "{{ host_address }}:5001/filrouge-simple-api"
         ports: 5000:5000
         pull: true
         volumes:
           - /home/{{ ansible_user }}/student-list/simple_api/student_age.json:/data/student_age.json
         networks:
-          - name: student_list
+          - name: student-list
     - name: Create website
       community.docker.docker_container:
-        name: "filrouge_website"
-        image: "{{ host_address }}:5001/filrouge_website"
+        name: "filrouge-website"
+        image: "{{ host_address }}:5001/filrouge-website"
         ports: 80:80
         env:
           USERNAME: "{{ api_username }}"
           PASSWORD: "{{ api_password }}"
+          IPADDRESS: "{{ ansible_host }}"
         pull: true
         volumes:
           - /home/{{ ansible_user }}/student-list/website:/var/www/html
         networks:
-          - name: student_list
+          - name: student-list

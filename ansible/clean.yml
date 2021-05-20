@@ -7,26 +7,26 @@
   tasks:
     - name: clean website container
       community.docker.docker_container:
-        name: "filrouge_website"
+        name: "filrouge-website"
         keep_volumes: no
         state: absent
     - name: clean api container
       community.docker.docker_container:
-        name: "filrouge_simple_api"
+        name: "filrouge-simple-api"
         keep_volumes: no
         state: absent
     - name: clean network
       community.docker.docker_network:
-        name: student_list
+        name: student-list
         state: absent
     - name: clean website image
       community.docker.docker_image:
-        name: "{{ host_address }}:5001/filrouge_website"
+        name: "{{ host_address }}:5001/filrouge-website"
         force_absent: yes
         state: absent
     - name: clean api image
       community.docker.docker_image:
-        name: "{{ host_address }}:5001/filrouge_simple_api"
+        name: "{{ host_address }}:5001/filrouge-simple-api"
         force_absent: yes
         state: absent
     - name: clean directory

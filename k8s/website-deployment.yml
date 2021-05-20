@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website-deployment
+  labels:
+    app: website
+  namespace: filrouge
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: website
+  template:
+    metadata:
+      labels:
+        app: website
+    spec:
+      containers:
+      - name: website
+        image: guyduche/filrouge:website
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: repo
+        env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: apicred
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: apicred
+              key: password
+      imagePullSecrets:
+      - name: regcred
+      volumes:
+      - name: repo
+        hostPath:
+          path: /home/centos/student-list/website
+          type: Directory

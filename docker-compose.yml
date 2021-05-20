@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  filrouge_simple_api:
+  filrouge-simple-api:
     build: simple_api
     ports:
       - "5000:5000"
@@ -19,12 +19,12 @@ services:
 #   restart: always
 
 
-  filrouge_website:
+  filrouge-website:
     build: website
     ports:
       - "80:80"
     depends_on:
-      - filrouge_simple_api
+      - filrouge-simple-api
     networks:
       - web
     volumes:
@@ -32,6 +32,7 @@ services:
     environment:
       - USERNAME=${API_USERNAME}
       - PASSWORD=${API_PASSWORD}
+      - IPADDRESS=${HOST_ADDRESS}
 #   labels:
 #     - traefik.enable=true
 #     - traefik.http.routers.apache_prod.rule=Host(front-website.fil-rouge.fr)

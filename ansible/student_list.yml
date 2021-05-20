@@ -12,7 +12,7 @@
       community.docker.docker_container:
         name: "filrouge-simple-api"
         image: "{{ host_address }}:5001/filrouge-simple-api"
-        ports: 5002:5002
+        ports: 5000:5000
         pull: true
         volumes:
           - /home/{{ ansible_user }}/student-list/simple_api/student_age.json:/data/student_age.json

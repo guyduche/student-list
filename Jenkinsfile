@@ -38,8 +38,8 @@ pipeline {
                 script {
                     sh '''
                     export HOST_ADDRESS=`docker run --rm --net=host alpine ifconfig ens33 | grep \"inet addr\" | tr -d [a-zA-Z:] | tr -s \" \" | cut -f 2 -d \" \"`
-                    docker run --name $IMAGE_API -v /home/centos/student-list/simple_api/student_age.json:/data/student_age.json -d -p 5002:5002 --network jenkins_default $IMAGE_API
-                    docker run --name $IMAGE_WEBSITE -v /home/centos/student-list/website:/var/www/html -d -e USERNAME=${API_CRED_USR} -e PASSWORD=${API_CRED_PSW} -e IPADDRESS={HOST_ADDRESS} -p 80:80 --network jenkins_default $IMAGE_WEBSITE
+                    docker run --name $IMAGE_API -v /home/centos/student-list/simple_api/student_age.json:/data/student_age.json -d -p 5000:5000 --network jenkins_default $IMAGE_API
+                    docker run --name $IMAGE_WEBSITE -v /home/centos/student-list/website:/var/www/html -d -e USERNAME=${API_CRED_USR} -e PASSWORD=${API_CRED_PSW} -e IPADDRESS=${HOST_ADDRESS} -p 80:80 --network jenkins_default $IMAGE_WEBSITE
                     sleep 5
                     '''
                 }

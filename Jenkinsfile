@@ -86,7 +86,7 @@ pipeline {
                     sh '''
                         yum install -y python3 sshpass
                         curl --silent --show-error --retry 5 https://bootstrap.pypa.io/pip/2.7/get-pip.py | python
-                        pip install ansible
+                        pip install ansible==3.4.0
                     '''
                 }
             }
